@@ -1,0 +1,12 @@
+# פנימי — לא עולה לאתר הציבורי
+docs/
+קוד-עוגן-AI-לגוגל-סקריפט.gs
+הוראות-חיבור-AI.md
+QA.md
+
+# גרסאות ישנות של תמונת הדמות — האתר משתמש רק ב-v4
+assets/ogen-entity-v2.png
+assets/ogen-entity-v2.webp
+assets/ogen-entity-v3.png
+
+node_modules/

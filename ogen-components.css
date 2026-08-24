@@ -1,0 +1,622 @@
+/*
+  ogen-components.css
+  Buttons, chips, cards, badges and content components shared across
+  the home screen, section integration points and the chat panel.
+*/
+
+/* ============ Buttons ============ */
+.ogen-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-size: var(--ogen-fs-secondary);
+  font-weight: 700;
+  padding: 0 var(--space-5);
+  height: 46px;
+  border-radius: var(--ogen-radius-md);
+  transition: transform var(--ogen-duration-fast) var(--ogen-ease),
+              box-shadow var(--ogen-duration-fast) var(--ogen-ease),
+              background var(--ogen-duration-fast) var(--ogen-ease),
+              border-color var(--ogen-duration-fast) var(--ogen-ease);
+  white-space: nowrap;
+}
+
+.ogen-btn:hover { transform: translateY(-1px); }
+.ogen-btn:active { transform: translateY(0); }
+
+.ogen-btn--primary {
+  background: linear-gradient(90deg, var(--ogen-action-start), var(--ogen-action-end));
+  color: #fff;
+  box-shadow: var(--ogen-shadow-sm);
+}
+
+.ogen-btn--primary:hover {
+  box-shadow: var(--ogen-shadow-md);
+}
+
+.ogen-btn--secondary {
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border-strong);
+  color: var(--ogen-navy-900);
+}
+
+.ogen-btn--secondary:hover {
+  border-color: var(--ogen-blue-500);
+}
+
+.ogen-btn--ghost {
+  background: transparent;
+  color: var(--ogen-navy-900);
+  height: 40px;
+  padding: 0 var(--space-3);
+}
+
+.ogen-btn--ghost:hover {
+  background: var(--ogen-surface-blue);
+}
+
+.ogen-btn--sm {
+  height: 38px;
+  min-height: var(--ogen-touch-target);
+  padding: 0 var(--space-4);
+  font-size: var(--ogen-fs-meta);
+}
+
+.ogen-btn:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ============ Chips (suggested actions) ============ */
+.ogen-chip {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  min-height: var(--ogen-touch-target);
+  padding: 0 var(--space-4);
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border);
+  border-radius: var(--ogen-radius-pill);
+  font-size: var(--ogen-fs-secondary);
+  color: var(--ogen-navy-900);
+  transition: border-color var(--ogen-duration-fast) var(--ogen-ease),
+              background var(--ogen-duration-fast) var(--ogen-ease);
+}
+
+.ogen-chip:hover {
+  border-color: var(--ogen-blue-500);
+  background: var(--ogen-surface-blue);
+}
+
+.ogen-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+/* ============ Cards ============ */
+.ogen-card {
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border);
+  border-radius: var(--ogen-radius-lg);
+  box-shadow: var(--ogen-shadow-sm);
+  padding: var(--space-5);
+}
+
+/* ============ Quick actions ============ */
+.ogen-quick-actions {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--space-4);
+}
+
+.ogen-quick-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  text-align: right;
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border);
+  border-radius: var(--ogen-radius-lg);
+  padding: var(--space-5);
+  transition: transform var(--ogen-duration-fast) var(--ogen-ease),
+              border-color var(--ogen-duration-fast) var(--ogen-ease),
+              box-shadow var(--ogen-duration-fast) var(--ogen-ease);
+  width: 100%;
+}
+
+.ogen-quick-action:hover,
+.ogen-quick-action:focus-visible {
+  transform: translateY(-2px);
+  border-color: var(--ogen-blue-500);
+  box-shadow: var(--ogen-shadow-md);
+}
+
+.ogen-quick-action__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--ogen-radius-sm);
+  background: var(--ogen-surface-blue);
+  color: var(--ogen-blue-600);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ogen-quick-action__title {
+  font-weight: 700;
+  font-size: var(--ogen-fs-secondary);
+  color: var(--ogen-text);
+}
+
+.ogen-quick-action__desc {
+  font-size: var(--ogen-fs-meta);
+  color: var(--ogen-text-muted);
+}
+
+/* Premium command grid: one anchor action and four compact paths. */
+.ogen-quick-actions {
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-auto-rows: minmax(116px, auto);
+  gap: 12px;
+}
+
+.ogen-quick-action {
+  grid-column: span 4;
+  position: relative;
+  overflow: hidden;
+  min-height: 116px;
+  padding: 22px;
+  gap: 8px;
+  border-radius: 20px;
+  border-color: rgba(190, 212, 231, .78);
+  box-shadow: none;
+}
+
+.ogen-quick-action:first-child {
+  grid-row: span 2;
+  min-height: 244px;
+  justify-content: flex-end;
+  background: #eaf5ff;
+}
+
+.ogen-quick-action:nth-child(2) { background: #f4f8fd; }
+.ogen-quick-action:nth-child(3) { background: #eefaf8; }
+.ogen-quick-action:nth-child(4) { background: #f4f3ff; }
+.ogen-quick-action:nth-child(5) { background: #eef8fd; }
+
+.ogen-quick-action::after {
+  content: "";
+  position: absolute;
+  width: 110px;
+  height: 110px;
+  inset-inline-end: -42px;
+  top: -48px;
+  border-radius: 50%;
+  background: rgba(39, 136, 255, .08);
+  transition: transform var(--ogen-duration-normal) var(--ogen-ease);
+}
+
+.ogen-quick-action:hover,
+.ogen-quick-action:focus-visible {
+  transform: translateY(-3px);
+  border-color: rgba(39, 136, 255, .48);
+  box-shadow: 0 16px 36px rgba(13, 59, 102, .08);
+}
+
+.ogen-quick-action:hover::after { transform: scale(1.25); }
+
+.ogen-quick-action__icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, .76);
+  border: 1px solid rgba(255, 255, 255, .9);
+  box-shadow: 0 8px 18px rgba(13, 59, 102, .06);
+}
+
+.ogen-quick-action:first-child .ogen-quick-action__icon {
+  width: 52px;
+  height: 52px;
+}
+
+.ogen-quick-action__title { font-size: 15px; }
+.ogen-quick-action:first-child .ogen-quick-action__title { font-size: 18px; }
+
+/* ============ "מה עכשיו?" task list ============ */
+.ogen-task-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ogen-task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border);
+  border-radius: var(--ogen-radius-md);
+  padding: var(--space-4) var(--space-5);
+}
+
+.ogen-task__main {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ogen-task__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.ogen-task__dot--due-soon { background: var(--ogen-warning); }
+.ogen-task__dot--on-track { background: var(--ogen-success); }
+.ogen-task__dot--new { background: var(--ogen-blue-500); }
+
+.ogen-task__title {
+  font-size: var(--ogen-fs-secondary);
+  font-weight: 600;
+}
+
+.ogen-task__due {
+  font-size: var(--ogen-fs-meta);
+  color: var(--ogen-text-muted);
+}
+
+/* ============ Authority badges ============ */
+.ogen-badge {
+  display: inline-flex;
+  align-items: center;
+  height: 24px;
+  padding: 0 var(--space-3);
+  border-radius: var(--ogen-radius-pill);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.ogen-badge--mandatory {
+  color: var(--ogen-authority-mandatory-text);
+  background: var(--ogen-authority-mandatory-bg);
+}
+
+.ogen-badge--directive {
+  color: var(--ogen-authority-directive-text);
+  background: var(--ogen-authority-directive-bg);
+}
+
+.ogen-badge--professional {
+  color: var(--ogen-authority-professional-text);
+  background: var(--ogen-authority-professional-bg);
+}
+
+.ogen-badge--suggestion {
+  color: var(--ogen-authority-suggestion-text);
+  background: var(--ogen-authority-suggestion-bg);
+}
+
+/* ============ AI generated marker ============ */
+.ogen-ai-marker {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ogen-ai-text);
+  background: var(--ogen-ai-bg);
+  border-radius: var(--ogen-radius-pill);
+  padding: var(--space-1) var(--space-3);
+}
+
+/* ============ Evidence state ============ */
+.ogen-evidence {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--ogen-fs-secondary);
+  font-weight: 700;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--ogen-radius-md);
+}
+
+.ogen-evidence__icon {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.ogen-evidence--supported {
+  color: var(--ogen-success-text);
+  background: var(--ogen-success-bg);
+}
+
+.ogen-evidence--partial {
+  color: var(--ogen-warning-text);
+  background: var(--ogen-warning-bg);
+}
+
+.ogen-evidence--unsupported {
+  color: var(--ogen-danger-text);
+  background: var(--ogen-danger-bg);
+}
+
+/* ============ Source card ============ */
+.ogen-source-card {
+  background: var(--ogen-surface);
+  border: 1px solid var(--ogen-border);
+  border-radius: var(--ogen-radius-lg);
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-right: 4px solid var(--ogen-source-accent, var(--ogen-blue-500));
+  min-width: 0;
+}
+
+.ogen-source-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.ogen-source-card__type {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--ogen-fs-meta);
+  font-weight: 700;
+  color: var(--ogen-navy-900);
+}
+
+.ogen-source-card__official {
+  font-size: 12px;
+  color: var(--ogen-text-muted);
+}
+
+.ogen-source-card__title {
+  font-size: var(--ogen-fs-h3);
+  font-weight: 700;
+  color: var(--ogen-text);
+}
+
+.ogen-source-card__meta {
+  font-size: var(--ogen-fs-meta);
+  color: var(--ogen-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.ogen-source-card__link {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--ogen-fs-secondary);
+  font-weight: 700;
+  color: var(--ogen-navy-800);
+  text-decoration: none;
+}
+
+.ogen-source-card__link:hover {
+  text-decoration: underline;
+}
+
+.ogen-source-card__link--disabled {
+  color: var(--ogen-text-muted);
+  cursor: not-allowed;
+  font-weight: 600;
+}
+
+.ogen-source-card[data-source-type="website"]   { --ogen-source-accent: var(--ogen-blue-500); }
+.ogen-source-card[data-source-type="managers"]  { --ogen-source-accent: var(--ogen-navy-800); }
+.ogen-source-card[data-source-type="counseling"] { --ogen-source-accent: var(--ogen-teal-500); }
+
+.ogen-source-card {
+  border-right-width: 1px;
+  border-color: rgba(190, 212, 231, .85);
+  box-shadow: none;
+  background: rgba(248, 251, 255, .82);
+  transition: border-color var(--ogen-duration-fast) var(--ogen-ease),
+              box-shadow var(--ogen-duration-fast) var(--ogen-ease);
+}
+
+.ogen-source-card:has(.ogen-source-card__link:not(.ogen-source-card__link--disabled)):hover {
+  border-color: rgba(39, 136, 255, .45);
+  box-shadow: 0 10px 26px rgba(13, 59, 102, .07);
+}
+
+.ogen-source-card__type {
+  color: var(--ogen-source-accent, var(--ogen-blue-600));
+}
+
+.ogen-source-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+/* ============ Conflict banner ============ */
+.ogen-conflict {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  background: var(--ogen-warning-bg);
+  color: #7A5716;
+  border-radius: var(--ogen-radius-md);
+  padding: var(--space-4) var(--space-5);
+  font-weight: 700;
+  font-size: var(--ogen-fs-secondary);
+}
+
+/* ============ Skeleton ============ */
+.ogen-skeleton {
+  border-radius: var(--ogen-radius-sm);
+  background: linear-gradient(90deg, var(--ogen-surface-soft) 25%, var(--ogen-border) 37%, var(--ogen-surface-soft) 63%);
+  background-size: 400% 100%;
+  animation: ogen-skeleton-shine 1.6s ease-in-out infinite;
+}
+
+@keyframes ogen-skeleton-shine {
+  0%   { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ogen-skeleton { animation: none; }
+}
+
+/* ============ Empty / Error state ============ */
+.ogen-state-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  padding: var(--space-8) var(--space-5);
+}
+
+.ogen-state-panel__text {
+  color: var(--ogen-text-secondary);
+  max-width: 32em;
+}
+
+.ogen-state-panel__actions {
+  display: flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ============ Section "ask Ogen" integration ============ */
+.ogen-section-ask {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-inline-start: var(--space-3);
+  height: 34px;
+  min-height: var(--ogen-touch-target);
+  padding: 0 var(--space-4);
+  border-radius: var(--ogen-radius-pill);
+  background: var(--ogen-surface-blue);
+  color: var(--ogen-navy-900);
+  font-size: var(--ogen-fs-meta);
+  font-weight: 700;
+  border: 1px solid transparent;
+  transition: border-color var(--ogen-duration-fast) var(--ogen-ease);
+  vertical-align: middle;
+}
+
+.ogen-section-ask:hover {
+  border-color: var(--ogen-blue-500);
+}
+
+.ogen-section-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ogen-inline-callout {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  background: var(--ogen-lilac-100);
+  border-radius: var(--ogen-radius-lg);
+  padding: var(--space-5);
+  margin: var(--space-6) 0;
+}
+
+.ogen-inline-callout__icon {
+  font-size: 20px;
+}
+
+.ogen-inline-callout__title {
+  font-weight: 700;
+  margin-bottom: var(--space-1);
+}
+
+.ogen-inline-callout__text {
+  color: var(--ogen-text-secondary);
+  font-size: var(--ogen-fs-secondary);
+  margin-bottom: var(--space-3);
+}
+
+/* ============ Connected hubs strip (welcome) ============ */
+.ogen-hubs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 12px;
+}
+
+.ogen-hub {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--ogen-touch-target);
+  padding: 14px 18px;
+  background: rgba(255, 255, 255, .72);
+  border: 1px solid rgba(190, 212, 231, .78);
+  border-radius: 16px;
+  text-decoration: none;
+  color: var(--ogen-text);
+  transition: transform var(--ogen-duration-fast) var(--ogen-ease),
+              border-color var(--ogen-duration-fast) var(--ogen-ease),
+              box-shadow var(--ogen-duration-fast) var(--ogen-ease);
+}
+
+.ogen-hub:hover,
+.ogen-hub:focus-visible {
+  transform: translateY(-2px);
+  border-color: rgba(39, 136, 255, .48);
+  box-shadow: 0 14px 30px rgba(13, 59, 102, .08);
+}
+
+.ogen-hub__icon {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ogen-surface-blue);
+  color: var(--ogen-blue-600);
+  border: 1px solid rgba(255, 255, 255, .9);
+}
+
+.ogen-hub__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.ogen-hub__title {
+  font-weight: 700;
+  font-size: var(--ogen-fs-secondary);
+  color: var(--ogen-navy-900);
+}
+
+.ogen-hub__desc {
+  font-size: 12px;
+  color: var(--ogen-text-muted);
+  overflow-wrap: anywhere;
+}
+
+.ogen-hub__open {
+  margin-inline-start: auto;
+  color: var(--ogen-text-muted);
+  transition: color var(--ogen-duration-fast) var(--ogen-ease),
+              transform var(--ogen-duration-fast) var(--ogen-ease);
+}
+
+.ogen-hub:hover .ogen-hub__open {
+  color: var(--ogen-blue-600);
+  transform: translate(-2px, -2px);
+}

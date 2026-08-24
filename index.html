@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>עוגן · סוכנת הידע של משרד העבודה</title>
+<meta name="description" content="פרוטוטייפ עיצובי של עוגן, סוכנת הידע של אתר תיק המנהל, משרד העבודה.">
+
+<!-- PWA: התקנה למסך הבית -->
+<meta name="theme-color" content="#0D3B66">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icons/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="עוגן">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&family=Heebo:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="ogen-tokens.css">
+<link rel="stylesheet" href="ogen-base.css">
+<link rel="stylesheet" href="ogen-entity.css">
+<link rel="stylesheet" href="ogen-components.css">
+<link rel="stylesheet" href="ogen-chat.css">
+<link rel="stylesheet" href="ogen-responsive.css">
+</head>
+<body>
+
+<a class="ogen-skip-link" href="#ogen-chat-textarea">דלגו לשדה השאלה</a>
+
+<main class="ogen-app">
+
+  <header class="ogen-chat-header">
+    <span id="ogen-chat-header-entity-slot"></span>
+    <div class="ogen-chat-header__meta">
+      <div class="ogen-chat-header__title">עוגן</div>
+      <div class="ogen-chat-header__subtitle">סוכנת הידע של משרד העבודה</div>
+    </div>
+    <div class="ogen-chat-header__status" aria-label="מצב המערכת: מחוברת לשלושה מאגרי ידע">
+      <span class="ogen-chat-header__status-dot" aria-hidden="true"></span>
+      מחוברת · 3 מאגרים
+    </div>
+  </header>
+
+  <div id="ogen-chat-conversation" class="ogen-chat-conversation" role="log" aria-live="polite" aria-relevant="additions" aria-label="שיחה עם עוגן"></div>
+
+  <form class="ogen-composer" id="ogen-composer-form">
+    <div class="ogen-composer__field">
+      <label for="ogen-chat-textarea" class="ogen-sr-only">שאלו את עוגן</label>
+      <textarea id="ogen-chat-textarea" class="ogen-composer__textarea" rows="1" placeholder="שאלו את עוגן..."></textarea>
+    </div>
+    <button type="submit" id="ogen-chat-send" class="ogen-composer__send" aria-label="שליחה"></button>
+  </form>
+
+</main>
+
+<script>
+/* חיבור למוח ה-AI (Claude) דרך Google Apps Script:
+   1. פורסים את "קוד-עוגן-AI-לגוגל-סקריפט.gs" כאפליקציית אינטרנט (הוראות בתוך הקובץ)
+   2. מדביקים כאן את כתובת ה-exec שמתקבלת, בין המרכאות
+   כשהשורה ריקה — עוגן עונה מהמנוע המקומי (מילות מפתח, בלי AI). */
+window.OGEN_BACKEND_URL = "https://script.google.com/macros/s/AKfycbzggpSrv4lHq6RF4784hJKEp1cTktjUmZDZ8TliicXYjfM_cJ4xoRYsIVa-8y7EgvYl/exec";
+</script>
+<script src="ogen-components.js"></script>
+<script src="ogen-knowledge.js"></script>
+<script src="ogen-app.js"></script>
+
+<script>
+/* רישום ה-service worker (PWA). עובד רק כשהאתר מוגש מכתובת אינטרנט (https)
+   או localhost — כשפותחים כקובץ מקומי (file://) הדפדפן מדלג בשקט. */
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", function () {
+    navigator.serviceWorker.register("sw.js").catch(function () { /* לא קריטי */ });
+  });
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+/*
+  ogen-tokens.css
+  Design tokens for the "עוגן" (Ogen) knowledge-agent prototype.
+  All color, spacing, radius, shadow, typography and motion values
+  used anywhere in the prototype must be sourced from here.
+*/
+
+:root {
+  /* ===== BRAND ===== */
+  --ogen-navy-900: #0D3B66;
+  --ogen-navy-800: #124D7A;
+
+  --ogen-blue-600: #1677FF;
+  --ogen-blue-500: #2788FF;
+  --ogen-blue-100: #E8F2FF;
+
+  --ogen-cyan-500: #27C6F3;
+  --ogen-cyan-100: #E7F9FE;
+
+  --ogen-teal-500: #00CDBB;
+  --ogen-teal-100: #E4FAF7;
+
+  --ogen-lilac-400: #A5B4FF;
+  --ogen-lilac-100: #F0F2FF;
+
+  /* ===== SURFACES ===== */
+  --ogen-canvas: #F8FBFF;
+  --ogen-surface: #FFFFFF;
+  --ogen-surface-soft: #F2F7FC;
+  --ogen-surface-blue: #EEF6FF;
+
+  /* ===== TEXT ===== */
+  --ogen-text: #102A43;
+  --ogen-text-secondary: #52687A;
+  --ogen-text-muted: #60778A;
+  --ogen-text-inverse: #FFFFFF;
+
+  /* Accessible action gradient; brand cyan remains available for accents. */
+  --ogen-action-start: #124D7A;
+  --ogen-action-end: #087B9C;
+
+  /* ===== BORDERS ===== */
+  --ogen-border: #D8E6F2;
+  --ogen-border-strong: #BED4E7;
+
+  /* ===== STATES ===== */
+  --ogen-success: #00A98F;
+  --ogen-success-text: #007A68;
+  --ogen-success-bg: #E8F8F4;
+
+  --ogen-warning: #D89A20;
+  --ogen-warning-text: #8A5A00;
+  --ogen-warning-bg: #FFF7E4;
+
+  --ogen-danger: #D95B67;
+  --ogen-danger-text: #B23A4A;
+  --ogen-danger-bg: #FFF0F2;
+
+  /* Authority badge accents (pastel) */
+  --ogen-authority-mandatory-text: #B23A4A;
+  --ogen-authority-mandatory-bg: #FCE9EC;
+  --ogen-authority-directive-text: #145FA8;
+  --ogen-authority-directive-bg: #E8F2FF;
+  --ogen-authority-professional-text: #087565;
+  --ogen-authority-professional-bg: #E4FAF7;
+  --ogen-authority-suggestion-text: #5B5FCF;
+  --ogen-authority-suggestion-bg: #F0F2FF;
+
+  /* AI-generated content marker */
+  --ogen-ai-bg: #F0F2FF;
+  --ogen-ai-text: #4A4FBF;
+
+  /* ===== RADIUS ===== */
+  --ogen-radius-sm: 10px;
+  --ogen-radius-md: 14px;
+  --ogen-radius-lg: 18px;
+  --ogen-radius-xl: 24px;
+  --ogen-radius-2xl: 30px;
+  --ogen-radius-pill: 999px;
+
+  /* ===== SHADOW ===== */
+  --ogen-shadow-sm: 0 4px 14px rgba(13, 59, 102, .06);
+  --ogen-shadow-md: 0 12px 34px rgba(13, 59, 102, .09);
+  --ogen-shadow-float: 0 20px 60px rgba(13, 59, 102, .14);
+
+  /* ===== MOTION ===== */
+  --ogen-duration-fast: 160ms;
+  --ogen-duration-normal: 260ms;
+  --ogen-duration-slow: 420ms;
+  --ogen-ease: cubic-bezier(.2, .8, .2, 1);
+  --ogen-touch-target: 44px;
+
+  /* ===== SPACING (8px grid) ===== */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+
+  /* ===== TYPOGRAPHY ===== */
+  --ogen-font: "Noto Sans Hebrew", "Heebo", "Assistant", system-ui, sans-serif;
+  --ogen-font-display: "Assistant", "Noto Sans Hebrew", "Heebo", system-ui, sans-serif;
+
+  --ogen-fs-hero: clamp(30px, 4vw, 48px);
+  --ogen-fs-h1: clamp(28px, 3vw, 36px);
+  --ogen-fs-h2: clamp(22px, 2.4vw, 28px);
+  --ogen-fs-h3: clamp(18px, 1.8vw, 21px);
+  --ogen-fs-body: 16px;
+  --ogen-fs-secondary: 14px;
+  --ogen-fs-meta: 13px;
+
+  /* ===== Z-INDEX ===== */
+  --ogen-z-floating: 60;
+  --ogen-z-chat: 70;
+  --ogen-z-overlay: 65;
+}
