@@ -23,6 +23,9 @@
   ).trim();
 
   var POSITION = window.OGEN_WIDGET_POSITION === "right" ? "right" : "left";
+
+  /* מצב עצמאי (chat.html): צ'אט במסך מלא, בלי כפתור צף — משמש כאפליקציה לנייד */
+  var STANDALONE = !!window.OGEN_WIDGET_STANDALONE;
   var AVATAR_URL = "https://meytalp-dev.github.io/ogen/assets/icons/icon-192.png";
   var FULL_APP_URL = "https://meytalp-dev.github.io/ogen/";
 
@@ -67,7 +70,9 @@
     ".ogenw-send svg{transform:scaleX(-1)}" +
     ".ogenw-footer{text-align:center;font-size:11px;color:#667781;background:#F0F2F5;padding:0 0 6px}" +
     ".ogenw-footer a{color:#0D3B66;text-decoration:none;font-weight:600}" +
-    "@media (max-width:480px){.ogenw-panel{bottom:0;" + POSITION + ":0;width:100vw;height:100dvh;border-radius:0}}";
+    "@media (max-width:480px){.ogenw-panel{bottom:0;" + POSITION + ":0;width:100vw;height:100dvh;border-radius:0}}" +
+    ".ogenw-panel.ogenw-standalone{bottom:0;" + POSITION + ":0;width:100vw;height:100dvh;border-radius:0;box-shadow:none}" +
+    ".ogenw-panel.ogenw-standalone .ogenw-close{display:none}";
 
   /* ============ בניית ה-DOM ============ */
   function el(tag, className, html) {
@@ -231,6 +236,14 @@
   });
 
   function mount() {
+    if (STANDALONE) {
+      document.body.appendChild(panel);
+      panel.classList.add("ogenw-standalone", "ogenw-open");
+      opened = true;
+      addMessage("bot", OPENING_MESSAGE);
+      history.push({ role: "assistant", content: OPENING_MESSAGE });
+      return;
+    }
     document.body.appendChild(launcher);
     document.body.appendChild(label);
     document.body.appendChild(panel);
