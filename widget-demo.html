@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>הדגמה · הוויג'ט "שאל את עוגן"</title>
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&family=Heebo:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; font-family: "Heebo", "Assistant", system-ui, sans-serif; background: #F8FBFF; color: #102A43; }
+  .hero { background: linear-gradient(135deg, #0D3B66, #124D7A); color: #fff; padding: 56px 24px; text-align: center; }
+  .hero h1 { margin: 0 0 10px; font-family: "Assistant", sans-serif; font-size: clamp(26px, 4vw, 40px); }
+  .hero p { margin: 0; opacity: .85; font-size: 17px; }
+  .content { max-width: 720px; margin: 0 auto; padding: 40px 24px 120px; }
+  .card { background: #fff; border: 1px solid #D8E6F2; border-radius: 18px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 14px rgba(13,59,102,.06); }
+  .card h2 { margin: 0 0 8px; font-size: 20px; }
+  .card p { margin: 0; line-height: 1.7; color: #52687A; }
+  code { background: #EEF6FF; border-radius: 6px; padding: 2px 8px; font-size: 13px; direction: ltr; display: inline-block; }
+  .hint { text-align: center; color: #60778A; font-size: 14px; margin-top: 32px; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>דף הדגמה — אתר מארח</h1>
+  <p>כך נראה הוויג'ט "שאל את עוגן" כשהוא מוטמע באתר קיים</p>
+</div>
+
+<div class="content">
+  <div class="card">
+    <h2>מה זה?</h2>
+    <p>הדף הזה מדמה אתר של בית ספר או של המשרד. שימו לב לכפתור הצף בפינה — לחיצה עליו פותחת צ'אט בסגנון ווטסאפ עם עוגן. כתבו "שלום" ותקבלו ברכה, ואז שאלו כל שאלה.</p>
+  </div>
+  <div class="card">
+    <h2>איך מטמיעים באתר אחר?</h2>
+    <p>מוסיפים שורה אחת לפני סגירת ה־body:</p>
+    <p style="margin-top:10px"><code>&lt;script src="https://meytalp-dev.github.io/ogen/ogen-widget.js" defer&gt;&lt;/script&gt;</code></p>
+  </div>
+  <div class="card">
+    <h2>למי זה מתאים?</h2>
+    <p>לכל אתר שרוצה מענה מיידי לשאלות — אתרי חינוך והדרכה, דפי נחיתה של יזמים, אתרי שיווק עם שאלות נפוצות, או פורטלים פנים־ארגוניים בניהול.</p>
+  </div>
+  <p class="hint">👇 הכפתור הצף מחכה בפינת המסך</p>
+</div>
+
+<script src="ogen-widget.js" defer></script>
+</body>
+</html>

@@ -464,6 +464,11 @@
   line-height: 1.75;
 }
 
+.ogen-welcome__tags {
+  margin-top: 16px;
+  max-width: 55ch;
+}
+
 .ogen-welcome__section-head {
   display: flex;
   justify-content: space-between;

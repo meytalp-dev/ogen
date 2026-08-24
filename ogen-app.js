@@ -253,9 +253,24 @@
     }).join("") + "</div>";
   }
 
+  /* תגיות נושא במסך הפתיחה — לחיצה שולחת שאלה מוכנה */
+  var TOPIC_TAGS = [
+    { label: "נהלים והנחיות", ask: 'אילו נהלים והנחיות חשוב להכיר לקראת תשפ"ז?' },
+    { label: "תהליך אישור התכנון", ask: "מה תהליך אישור התכנון?" },
+    { label: "לוחות זמנים", ask: 'מהם לוחות הזמנים החשובים לתשפ"ז?' },
+    { label: "תקציבים תוספתיים", ask: "אילו תקציבים תוספתיים יש?" },
+    { label: "ייעוץ ורווחה", ask: "אילו חומרי ייעוץ ורווחה זמינים?" },
+    { label: "חומרים בדרייב", ask: "מה יש בדרייב המנהלים?" },
+    { label: "בנו לי תוצר", ask: "בנו לי צ'קליסט לתחילת שנה" }
+  ];
+
   function renderWelcome() {
     var quickActionsHtml = QUICK_ACTIONS.map(function (a) {
       return C.renderQuickAction(a);
+    }).join("");
+
+    var topicTagsHtml = TOPIC_TAGS.map(function (t) {
+      return '<button type="button" class="ogen-chip" data-ask="' + C.escapeHtml(t.ask) + '">' + C.escapeHtml(t.label) + "</button>";
     }).join("");
 
     var exampleChips = EXAMPLE_QUESTIONS.map(function (q) {
@@ -269,7 +284,8 @@
           '<div class="ogen-welcome__copy">' +
             '<span class="ogen-welcome__eyebrow">עוגן · סוכנת ידע מחוברת</span>' +
             '<h1 class="ogen-hero-title">ידע שמניע את העבודה קדימה.</h1>' +
-            '<p class="ogen-welcome__lede">שאלו על ההיערכות לתשפ"ז, מצאו חומרים בדרייב המנהלים והיועצים, או בנו תוצר מוכן לעבודה — בניהול, ביזמות, בשיווק ובשימוש היומיומי.</p>' +
+            '<p class="ogen-welcome__lede">עוגן הוא המקום לשאול את כל השאלות — על נהלים, הנחיות, תהליכים ועוד.</p>' +
+            '<div class="ogen-chip-row ogen-welcome__tags">' + topicTagsHtml + "</div>" +
           "</div>" +
         "</div>" +
         '<div class="ogen-welcome__section-head"><span>מקורות מחוברים</span><span aria-hidden="true">01</span></div>' +
@@ -293,12 +309,32 @@
     state.history.push({ role: "assistant", content: memo });
   }
 
+  /* ברכת שלום נענית מיד, בלי לפנות ל-AI — כמו בצ'אט אנושי */
+  var GREETING_RE = /^(שלום|היי+|הי|אהלן|הלו|בוקר טוב|ערב טוב|צהריים טובים|מה נשמע|מה שלומך|hi|hello|hey)[\s!?.,]*$/i;
+  var GREETING_REPLY = "שלום לך! הגעת למקום הנכון לשאול שאלה. מה תרצו לדעת?";
+
+  function renderGreetingReply() {
+    return (
+      '<div class="ogen-answer">' +
+        '<div class="ogen-answer__head">' + C.renderOgenEntity({ size: "xs", state: "found" }) +
+        '<span class="ogen-answer__name">עוגן</span></div>' +
+        '<div class="ogen-answer__body"><p>' + C.escapeHtml(GREETING_REPLY) + "</p></div>" +
+      "</div>"
+    );
+  }
+
   function ask(text) {
     var trimmed = (text || "").trim();
     if (!trimmed) return;
     dismissWelcome();
     appendNode(C.renderUserMessage(trimmed));
     state.history.push({ role: "user", content: trimmed });
+
+    if (GREETING_RE.test(trimmed)) {
+      state.history.push({ role: "assistant", content: GREETING_REPLY });
+      appendNode(renderGreetingReply());
+      return;
+    }
 
     if (BACKEND_URL) {
       askBackend(trimmed);

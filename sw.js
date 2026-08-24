@@ -11,8 +11,8 @@
   ה-worker החדש ימחק את המטמון הישן ויטען הכל מחדש.
 */
 
-const CACHE_NAME = "ogen-shell-v1";
-const RUNTIME_CACHE = "ogen-runtime-v1";
+const CACHE_NAME = "ogen-shell-v2";
+const RUNTIME_CACHE = "ogen-runtime-v2";
 
 const SHELL_FILES = [
   "./",
