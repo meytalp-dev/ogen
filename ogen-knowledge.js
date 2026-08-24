@@ -293,6 +293,11 @@
 
   /* ============ Searchable resource index — real Drive links ============ */
   var INDEX = [
+    /* --- אתר החינוך היוצר --- */
+    { keywords: ["חינוך יוצר", "החינוך היוצר", "ספר ההפעלה", "ספירלת הזרימה", "רפורמה", "פדגוגיה יוצרת", "אדם יוצר"],
+      source: { type: "website", title: "ספר ההפעלה של החינוך היוצר — חזון, פדגוגיה ויישום", section: "אתר החינוך היוצר · yotzer.education", date: "מתעדכן שוטף", authority: "professional", url: "https://guidebook.yotzer.education/" } },
+    { keywords: ["בתי ספר יוצרים", "רשימת בתי ספר", "בתי הספר ברפורמה", "איזה בתי ספר"],
+      source: { type: "website", title: "רשימת בתי הספר היוצרים (סינון לפי מחוז, מגמה ורשת)", section: "אתר החינוך היוצר", date: "מתעדכן שוטף", authority: "professional", url: "https://yotzer.education/ourschools/" } },
     /* --- חוזרי מנכ"ל — אתר משרד החינוך --- */
     { keywords: ["חוזר מנכל", "חוזר מנכ\"ל", "חוזרי מנכל", "הוראות מנכל", "השעיה", "השעיית תלמיד", "הרחקת תלמיד", "משמעת", "נוהל", "נהלים"],
       source: { type: "website", title: "חוזרי מנכ\"ל — אתר משרד החינוך (חיפוש לפי נושא ושנה)", section: "אתר רשמי · הוראות מנכ\"ל", date: "מתעדכן שוטף", authority: "directive", url: "https://apps.education.gov.il/mankal/" } },
