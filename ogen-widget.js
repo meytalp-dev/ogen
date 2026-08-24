@@ -190,9 +190,15 @@
       .then(function (data) {
         clearTimeout(timeoutId);
         typingNode.remove();
-        var reply = answerToText(data);
-        addMessage("bot", reply);
-        history.push({ role: "assistant", content: reply });
+        /* ה-backend עוטף את התשובה: {ok: true, answer: {...}} */
+        var answer = data && data.ok && data.answer && data.answer.summary ? data.answer : null;
+        if (answer) {
+          var reply = answerToText(answer);
+          addMessage("bot", reply);
+          history.push({ role: "assistant", content: reply });
+        } else {
+          addMessage("bot", "לא מצאתי לזה תשובה מבוססת במקורות שלי. נסו לנסח אחרת — או פתחו את עוגן המלא (הקישור למטה), שם אפשר לחפש גם במסמכים.");
+        }
       })
       .catch(function () {
         clearTimeout(timeoutId);

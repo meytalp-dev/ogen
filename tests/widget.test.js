@@ -30,6 +30,8 @@ test('the widget is self-contained, RTL, and talks to the same backend contract'
   assert.match(widget, /direction:rtl/);
   assert.match(widget, /Content-Type": "text\/plain;charset=utf-8/);
   assert.match(widget, /question: text, history: historyBefore\.slice\(-6\)/);
+  // ה-backend עוטף את התשובה ב-{ok, answer} — הוויג'ט חייב לפרק את העטיפה
+  assert.match(widget, /data\.ok && data\.answer && data\.answer\.summary/);
   assert.match(widget, /escapeHtml/);
   assert.match(widget, /script\.google\.com\/macros/);
 });
