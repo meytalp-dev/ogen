@@ -67,3 +67,15 @@ test('the demo page embeds the widget with a single script tag', () => {
   assert.match(demo, /<script src="ogen-widget\.js" defer><\/script>/);
   assert.match(demo, /dir="rtl"/);
 });
+
+/* 27.8.2026 — Apps Script עונה ב-302 לכתובת תוכן זמנית שמדי פעם מחזירה 404 רגעי.
+   התשובה כבר חושבה, אבל נופלת בדרך והמשתמש רואה "משהו השתבש". שני הצדדים
+   חייבים לנסות שוב לבד לפני שהם מציגים שגיאה. */
+test('both clients retry a failed backend call before showing an error', () => {
+  for (const [src, label] of [[widget, 'widget'], [appJs, 'app']]) {
+    assert.match(src, /BACKEND_ATTEMPTS = 3/, label + ' retries three times');
+    assert.match(src, /RETRY_DELAYS = \[1500, 4000\]/, label + ' backs off between attempts');
+    assert.match(src, /if \(!r\.ok\) throw new Error\("http " \+ r\.status\)/, label + ' treats a bad status as failure');
+    assert.match(src, /askBackendWithRetry\(payload\)/, label + ' sends through the retry wrapper');
+  }
+});

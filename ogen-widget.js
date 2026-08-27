@@ -235,6 +235,42 @@
     return parts.join("\n\n") || "לא הצלחתי למצוא תשובה. נסו לנסח אחרת.";
   }
 
+  /* ============ פנייה ל-backend עם ניסיונות חוזרים ============ */
+  /* Apps Script עונה ב-302 לכתובת תוכן זמנית, ומדי פעם היא מחזירה 404 רגעי —
+     התשובה כבר חושבה אבל אובדת בדרך. ניסיון חוזר שקוף פותר את זה בלי
+     שהמשתמש יראה שגיאה. */
+  var BACKEND_ATTEMPTS = 3;
+  var RETRY_DELAYS = [1500, 4000];
+
+  function backendOnce(payload) {
+    var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 90000);
+    return fetch(BACKEND_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: payload,
+      signal: controller ? controller.signal : undefined
+    })
+      .then(function (r) {
+        if (!r.ok) throw new Error("http " + r.status);
+        return r.json();
+      })
+      .then(
+        function (data) { clearTimeout(timeoutId); return data; },
+        function (err) { clearTimeout(timeoutId); throw err; }
+      );
+  }
+
+  function askBackendWithRetry(payload, attempt) {
+    attempt = attempt || 1;
+    return backendOnce(payload).catch(function (err) {
+      if (attempt >= BACKEND_ATTEMPTS) throw err;
+      var wait = RETRY_DELAYS[attempt - 1] || 4000;
+      return new Promise(function (resolve) { setTimeout(resolve, wait); })
+        .then(function () { return askBackendWithRetry(payload, attempt + 1); });
+    });
+  }
+
   function send() {
     var text = input.value.trim();
     if (!text || busy) return;
@@ -260,18 +296,10 @@
     var typingNode = addTyping();
     var historyBefore = history.slice(0, -1);
 
-    var controller = typeof AbortController !== "undefined" ? new AbortController() : null;
-    var timeoutId = setTimeout(function () { if (controller) controller.abort(); }, 90000);
+    var payload = JSON.stringify({ question: text, history: historyBefore.slice(-6) });
 
-    fetch(BACKEND_URL, {
-      method: "POST",
-      headers: { "Content-Type": "text/plain;charset=utf-8" },
-      body: JSON.stringify({ question: text, history: historyBefore.slice(-6) }),
-      signal: controller ? controller.signal : undefined
-    })
-      .then(function (r) { return r.json(); })
+    askBackendWithRetry(payload)
       .then(function (data) {
-        clearTimeout(timeoutId);
         typingNode.remove();
         /* ה-backend עוטף את התשובה: {ok: true, answer: {...}} */
         var answer = data && data.ok && data.answer && data.answer.summary ? data.answer : null;
@@ -284,7 +312,6 @@
         }
       })
       .catch(function () {
-        clearTimeout(timeoutId);
         typingNode.remove();
         addMessage("bot", "משהו השתבש בדרך למקור. נסו שוב בעוד רגע 🙏");
       })
