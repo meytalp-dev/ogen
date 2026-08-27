@@ -12,7 +12,14 @@ function extractGreetingRe(src, label) {
   return eval(match[1]);
 }
 
+function extractGreetingReplies(src, label) {
+  const match = src.match(/GREETING_REPLIES = (\[[\s\S]*?\]);/);
+  assert.ok(match, 'GREETING_REPLIES found in ' + label);
+  return eval(match[1]);
+}
+
 test('widget and full app share the same greeting behavior', () => {
+  const greetingSets = [];
   for (const [src, label] of [[widget, 'widget'], [appJs, 'app']]) {
     const re = extractGreetingRe(src, label);
     for (const greeting of ['שלום', 'שלום!', 'היי', 'בוקר טוב', 'מה נשמע?', 'hello']) {
@@ -21,8 +28,28 @@ test('widget and full app share the same greeting behavior', () => {
     for (const question of ['שלום, מה תהליך אישור התכנון?', 'מה יש בדרייב המנהלים?']) {
       assert.ok(!re.test(question), label + ' must not greet on: ' + question);
     }
-    assert.match(src, /שלום לך! הגעת למקום הנכון לשאול שאלה/, label + ' greeting reply text');
+    const replies = extractGreetingReplies(src, label);
+    assert.ok(replies.length >= 3, label + ' has several greeting replies');
+    greetingSets.push(replies.join('|'));
   }
+  assert.equal(greetingSets[0], greetingSets[1], 'widget and app share the same greetings');
+});
+
+test('the widget shows rotating waiting quips while Ogen thinks', () => {
+  for (const [src, label] of [[widget, 'widget'], [appJs, 'app']]) {
+    const match = src.match(/WAITING_QUIPS = (\[[\s\S]*?\]);/);
+    assert.ok(match, 'WAITING_QUIPS found in ' + label);
+    assert.ok(eval(match[1]).length >= 10, label + ' has enough quips');
+  }
+  assert.match(widget, /clearInterval\(cycleTimer\)/, 'widget stops the quip timer');
+});
+
+test('answers surface their source links', () => {
+  assert.match(widget, /function sourcesHtml/, 'widget renders source links');
+  assert.match(widget, /linkifyEscaped\(escapeHtml\(text\)\)/, 'widget linkifies message text');
+  const components = fs.readFileSync('ogen-components.js', 'utf8');
+  assert.match(components, /function textWithLinks/, 'app linkifies answer text');
+  assert.match(components, /textWithLinks\(answer\.summary\)/, 'app summary is linkified');
 });
 
 test('the widget is self-contained, RTL, and talks to the same backend contract', () => {

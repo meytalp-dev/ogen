@@ -284,7 +284,7 @@
           '<div class="ogen-welcome__copy">' +
             '<span class="ogen-welcome__eyebrow">עוגן · סוכנת ידע מחוברת</span>' +
             '<h1 class="ogen-hero-title">ידע שמניע את העבודה קדימה.</h1>' +
-            '<p class="ogen-welcome__lede">עוגן הוא המקום לשאול את כל השאלות — על נהלים, הנחיות, תהליכים ועוד.</p>' +
+            '<p class="ogen-welcome__lede">אני כאן כדי לחסוך לכם את החיפוש — נהלים, הנחיות, טפסים ותהליכים, עם הקישור למסמך עצמו. שאלו אותי כל דבר, גם אם זה נשמע לכם שאלה קטנה.</p>' +
             '<div class="ogen-chip-row ogen-welcome__tags">' + topicTagsHtml + "</div>" +
           "</div>" +
         "</div>" +
@@ -311,14 +311,22 @@
 
   /* ברכת שלום נענית מיד, בלי לפנות ל-AI — כמו בצ'אט אנושי */
   var GREETING_RE = /^(שלום|היי+|הי|אהלן|הלו|בוקר טוב|ערב טוב|צהריים טובים|מה נשמע|מה שלומך|hi|hello|hey)[\s!?.,]*$/i;
-  var GREETING_REPLY = "שלום לך! הגעת למקום הנכון לשאול שאלה. מה תרצו לדעת?";
+  var GREETING_REPLIES = [
+    "שלום לך! 😊 טוב שהגעתם. מה מעסיק אתכם היום?",
+    "היי! אני כאן — עם כל הנהלים, בלי לחפש בדרייב 'סופי-סופי-2'. מה תרצו לדעת?",
+    "שלום! הגעתם למקום הנכון לשאול. מה הכי בוער עכשיו?",
+    "אהלן! קחו נשימה, ותשאלו בשקט. מה צריך?"
+  ];
+  function greetingReply() {
+    return GREETING_REPLIES[Math.floor(Math.random() * GREETING_REPLIES.length)];
+  }
 
-  function renderGreetingReply() {
+  function renderGreetingReply(text) {
     return (
       '<div class="ogen-answer">' +
         '<div class="ogen-answer__head">' + C.renderOgenEntity({ size: "xs", state: "found" }) +
         '<span class="ogen-answer__name">עוגן</span></div>' +
-        '<div class="ogen-answer__body"><p>' + C.escapeHtml(GREETING_REPLY) + "</p></div>" +
+        '<div class="ogen-answer__body"><p>' + C.escapeHtml(text) + "</p></div>" +
       "</div>"
     );
   }
@@ -331,8 +339,9 @@
     state.history.push({ role: "user", content: trimmed });
 
     if (GREETING_RE.test(trimmed)) {
-      state.history.push({ role: "assistant", content: GREETING_REPLY });
-      appendNode(renderGreetingReply());
+      var hello = greetingReply();
+      state.history.push({ role: "assistant", content: hello });
+      appendNode(renderGreetingReply(hello));
       return;
     }
 
@@ -377,7 +386,12 @@
     "מסדרת את התשובה בנקודות — כמו מערכת בלי חלונות, חלום 😄",
     "עוד שנייה... גם ועדת התכנון לא מתכנסת ביום אחד 😉",
     "מחפשת בדרייב... הפעם בלי 'עותק של עותק של סופי-סופי' 📁",
-    "התשובה בדרך — מהר יותר ממענה ממשרד ממשלתי 😇"
+    "התשובה בדרך — מהר יותר ממענה ממשרד ממשלתי 😇",
+    "קוראת את הנוהל — ואת הנוהל שמעדכן את הנוהל 📄",
+    "מוצאת לכם את הקישור המדויק, שלא תחפשו לבד 🔗",
+    "נושמת עמוק במקומכם... שנייה ואני איתכם 🌬️",
+    "עוד רגע — ובינתיים, מגיע לכם קפה ☕",
+    "מוודאת שהתשובה תהיה קצרה. גם לי נמאס ממסמכים ארוכים 😄",
   ];
 
   function askBackend(question) {

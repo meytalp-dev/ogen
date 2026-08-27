@@ -14,6 +14,20 @@
     });
   }
 
+  /* כתובות שמופיעות בתוך טקסט התשובה הופכות לקישורים לחיצים.
+     חשוב: מריצים על טקסט שכבר עבר escapeHtml, אחרת נפתח פתח ל-HTML זר. */
+  var URL_IN_TEXT_RE = /(https?:\/\/[^\s<>"']+)/g;
+  function linkifyEscaped(escaped) {
+    return String(escaped).replace(URL_IN_TEXT_RE, function (match) {
+      var url = match.replace(/[.,;:)\]]+$/, "");
+      var tail = match.slice(url.length);
+      return '<a class="ogen-inline-link" href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + "</a>" + tail;
+    });
+  }
+  function textWithLinks(str) {
+    return linkifyEscaped(escapeHtml(str));
+  }
+
   /* ============ Icons ============ */
   /* One consistent line-icon set, stroke-based, no fills, no mixing with emoji. */
   var ICONS = {
@@ -231,16 +245,16 @@
   function renderAnswer(answer) {
     var blocks = "";
 
-    blocks += '<div><div class="ogen-answer__block-title">בקצרה</div><p>' + escapeHtml(answer.summary) + "</p></div>";
+    blocks += '<div><div class="ogen-answer__block-title">בקצרה</div><p>' + textWithLinks(answer.summary) + "</p></div>";
 
     if (answer.steps && answer.steps.length) {
       blocks += '<div><div class="ogen-answer__block-title">מה צריך לעשות?</div><ol class="ogen-answer__steps">' +
-        answer.steps.map(function (s) { return "<li>" + escapeHtml(s) + "</li>"; }).join("") +
+        answer.steps.map(function (s) { return "<li>" + textWithLinks(s) + "</li>"; }).join("") +
         "</ol></div>";
     }
 
     if (answer.important) {
-      blocks += '<div><div class="ogen-answer__block-title">חשוב לדעת</div><p>' + escapeHtml(answer.important) + "</p></div>";
+      blocks += '<div><div class="ogen-answer__block-title">חשוב לדעת</div><p>' + textWithLinks(answer.important) + "</p></div>";
     }
 
     if (answer.evidence) {
@@ -274,7 +288,7 @@
       '<div class="ogen-state-panel">' +
         renderOgenEntity({ size: "md", state: "warning" }) +
         '<h3 class="ogen-h3">לא מצאתי עדיין מקור מספק</h3>' +
-        '<p class="ogen-state-panel__text">לא מצאתי עדיין מקור שמאפשר לי לענות על זה בוודאות. אפשר לנסות לנסח אחרת או לחפש במסמכים קשורים.</p>' +
+        '<p class="ogen-state-panel__text">לא מצאתי עדיין מקור שמאפשר לי לענות על זה בוודאות — ואני מעדיפה להגיד את זה מאשר לנחש. אפשר לנסח אחרת, או לפנות למפקח/ת הפדגוגי/ת.</p>' +
         '<div class="ogen-state-panel__actions">' +
           '<button type="button" class="ogen-btn ogen-btn--secondary" data-demo-action="search-docs">חיפוש במסמכים</button>' +
           '<button type="button" class="ogen-btn ogen-btn--ghost" data-demo-action="rephrase">ניסוח מחדש</button>' +

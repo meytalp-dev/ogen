@@ -30,8 +30,42 @@
   var FULL_APP_URL = "https://meytalp-dev.github.io/ogen/";
 
   var GREETING_RE = /^(שלום|היי+|הי|אהלן|הלו|בוקר טוב|ערב טוב|צהריים טובים|מה נשמע|מה שלומך|hi|hello|hey)[\s!?.,]*$/i;
-  var GREETING_REPLY = "שלום לך! הגעת למקום הנכון לשאול שאלה. מה תרצו לדעת?";
-  var OPENING_MESSAGE = "שלום 👋 אני עוגן, סוכנת הידע של בתי הספר המקצועיים. שאלו אותי כל דבר על היערכות, נהלים, תקציבים וחומרים.";
+  var GREETING_REPLIES = [
+    "שלום לך! 😊 טוב שהגעתם. מה מעסיק אתכם היום?",
+    "היי! אני כאן — עם כל הנהלים, בלי לחפש בדרייב 'סופי-סופי-2'. מה תרצו לדעת?",
+    "שלום! הגעתם למקום הנכון לשאול. מה הכי בוער עכשיו?",
+    "אהלן! קחו נשימה, ותשאלו בשקט. מה צריך?"
+  ];
+  function greetingReply() {
+    return GREETING_REPLIES[Math.floor(Math.random() * GREETING_REPLIES.length)];
+  }
+  var OPENING_MESSAGE = "שלום 👋 אני עוגן, סוכנת הידע של בתי הספר המקצועיים.\nאני כאן כדי לחסוך לכם את החיפוש — נהלים, טפסים, תקציבים וחומרים.\nשאלו אותי כל דבר, גם אם זה נשמע לכם שאלה קטנה.";
+
+  /* משפטים קלילים למנהלים — מתחלפים בזמן שעוגן חושבת */
+  var WAITING_QUIPS = [
+    "מדפדפת בנספח ג'... כמו כל מנהל בתחילת שנה 😉",
+    "מחפשת איפה בדיוק שמו את הקובץ בדרייב... נשמע מוכר? 😄",
+    "סופרת ש\"ש... 26, 27, 28... עוד רגע מסיימת ☕",
+    "בודקת שאף תלמיד לא חורג ממכסת נספח א'...",
+    "מנסחת תשובה שתעבור גם ועדה מלווה 😉",
+    "מתאמת עם המפקח הפדגוגי... זה תמיד לוקח רגע 😄",
+    "רגע של שקט בחדר מנהלים — נצלו אותו, התשובה בדרך ☕",
+    "עוברת על אוגדן השעות... מבטיחה לא להירדם 😴",
+    "התשובה כמעט מוכנה — מהר יותר ממערכת שעות בספטמבר 😄",
+    "בודקת פעמיים, כמו לפני ישיבת הורים 😉",
+    "מחממת את המוח... המזגן בחדר מורים עדיין לא עובד? ❄️",
+    "עונה מהר יותר ממורה שרואה את המנהל במסדרון 🏃",
+    "רק מוודאת שאין צלצול באמצע התשובה 🔔",
+    "מסדרת את התשובה בנקודות — כמו מערכת בלי חלונות, חלום 😄",
+    "עוד שנייה... גם ועדת התכנון לא מתכנסת ביום אחד 😉",
+    "מחפשת בדרייב... הפעם בלי 'עותק של עותק של סופי-סופי' 📁",
+    "התשובה בדרך — מהר יותר ממענה ממשרד ממשלתי 😇",
+    "קוראת את הנוהל — ואת הנוהל שמעדכן את הנוהל 📄",
+    "מוצאת לכם את הקישור המדויק, שלא תחפשו לבד 🔗",
+    "נושמת עמוק במקומכם... שנייה ואני איתכם 🌬️",
+    "עוד רגע — ובינתיים, מגיע לכם קפה ☕",
+    "מוודאת שהתשובה תהיה קצרה. גם לי נמאס ממסמכים ארוכים 😄",
+  ];
 
   var history = [];
   var busy = false;
@@ -56,7 +90,12 @@
     ".ogenw-msg-bot{background:#FFFFFF;float:right;border-top-right-radius:2px}" +
     ".ogenw-msg-user{background:#D9FDD3;float:left;border-top-left-radius:2px}" +
     ".ogenw-msg a{color:#0D3B66;font-weight:600}" +
+    ".ogenw-src{display:block;margin-top:8px;padding-top:7px;border-top:1px solid #E6EAEF;font-size:12.5px;color:#667781;white-space:normal}" +
+    ".ogenw-src b{display:block;font-weight:600;color:#0D3B66;margin-bottom:3px}" +
+    ".ogenw-src a{display:block;color:#0D3B66;font-weight:600;text-decoration:none;margin-bottom:2px}" +
+    ".ogenw-src a:hover{text-decoration:underline}" +
     ".ogenw-time{display:block;font-size:10.5px;color:#667781;text-align:left;margin-top:3px}" +
+    ".ogenw-quip{display:block;font-size:12.5px;color:#667781;margin-top:5px;white-space:normal;line-height:1.45}" +
     ".ogenw-typing{display:inline-flex;gap:4px;align-items:center;padding:4px 2px}" +
     ".ogenw-typing span{width:7px;height:7px;border-radius:50%;background:#8696A0;animation:ogenw-blink 1.2s infinite}" +
     ".ogenw-typing span:nth-child(2){animation-delay:.2s}" +
@@ -128,9 +167,34 @@
     return String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
   }
 
-  function addMessage(kind, text) {
+  /* כתובות בתוך הטקסט הופכות לקישורים (על טקסט שכבר עבר escapeHtml) */
+  var URL_IN_TEXT_RE = /(https?:\/\/[^\s<>"']+)/g;
+  function linkifyEscaped(escaped) {
+    return String(escaped).replace(URL_IN_TEXT_RE, function (match) {
+      var url = match.replace(/[.,;:)\]]+$/, "");
+      var tail = match.slice(url.length);
+      return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + "</a>" + tail;
+    });
+  }
+
+  /* המקורות שעוגן החזירה — כקישורים לחיצים בתחתית ההודעה */
+  function sourcesHtml(answer) {
+    var list = (answer && answer.sources) || [];
+    var links = [];
+    for (var i = 0; i < list.length && links.length < 3; i++) {
+      var src = list[i] || {};
+      var url = String(src.url || "");
+      if (url.indexOf("http") !== 0) continue;
+      links.push('<a href="' + escapeHtml(url) + '" target="_blank" rel="noopener noreferrer">' +
+        escapeHtml(src.title || "פתיחת המקור") + "</a>");
+    }
+    if (!links.length) return "";
+    return '<span class="ogenw-src"><b>הקישורים:</b>' + links.join("") + "</span>";
+  }
+
+  function addMessage(kind, text, extraHtml) {
     var msg = el("div", "ogenw-msg ogenw-msg-" + kind,
-      escapeHtml(text) + '<span class="ogenw-time">' + timeNow() + "</span>");
+      linkifyEscaped(escapeHtml(text)) + (extraHtml || "") + '<span class="ogenw-time">' + timeNow() + "</span>");
     body.appendChild(msg);
     body.scrollTop = body.scrollHeight;
     return msg;
@@ -138,7 +202,25 @@
 
   function addTyping() {
     var t = el("div", "ogenw-msg ogenw-msg-bot",
-      '<span class="ogenw-typing"><span></span><span></span><span></span></span>');
+      '<span class="ogenw-typing"><span></span><span></span><span></span></span>' +
+      '<span class="ogenw-quip"></span>');
+    var quipNode = t.querySelector(".ogenw-quip");
+    var i = Math.floor(Math.random() * WAITING_QUIPS.length);
+    function nextQuip() {
+      quipNode.textContent = WAITING_QUIPS[i % WAITING_QUIPS.length];
+      i++;
+      body.scrollTop = body.scrollHeight;
+    }
+    /* המשפט הראשון עולה רק אחרי רגע — בתשובה מהירה הוא לא יופיע בכלל */
+    var firstTimer = setTimeout(nextQuip, 1400);
+    var cycleTimer = setInterval(nextQuip, 3200);
+    /* עוטפים את remove כדי שהטיימרים ייעצרו בכל מקום שמסירים את הבועה */
+    var domRemove = t.remove.bind(t);
+    t.remove = function () {
+      clearTimeout(firstTimer);
+      clearInterval(cycleTimer);
+      domRemove();
+    };
     body.appendChild(t);
     body.scrollTop = body.scrollHeight;
     return t;
@@ -166,8 +248,9 @@
       var typing = addTyping();
       setTimeout(function () {
         typing.remove();
-        addMessage("bot", GREETING_REPLY);
-        history.push({ role: "assistant", content: GREETING_REPLY });
+        var hello = greetingReply();
+        addMessage("bot", hello);
+        history.push({ role: "assistant", content: hello });
       }, 700);
       return;
     }
@@ -194,7 +277,7 @@
         var answer = data && data.ok && data.answer && data.answer.summary ? data.answer : null;
         if (answer) {
           var reply = answerToText(answer);
-          addMessage("bot", reply);
+          addMessage("bot", reply, sourcesHtml(answer));
           history.push({ role: "assistant", content: reply });
         } else {
           addMessage("bot", "לא מצאתי לזה תשובה מבוססת במקורות שלי. נסו לנסח אחרת — או פתחו את עוגן המלא (הקישור למטה), שם אפשר לחפש גם במסמכים.");
